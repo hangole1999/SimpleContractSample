@@ -1,7 +1,6 @@
 pragma solidity ^0.4.24;
 // ----------------------- Public Network Part -----------------------
 contract SimpleEthBlog {
-    
     SimpleEthBlogCore internal privateNetwork;
     address internal owner;
     
@@ -40,7 +39,6 @@ contract SimpleEthBlog {
 }
 // ----------------------- Private Network Part -----------------------
 contract SimpleEthBlogCore {
-    
     SimpleEthBlog internal publicNetwork;
     address internal owner;
     

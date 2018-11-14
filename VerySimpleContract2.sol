@@ -1,7 +1,6 @@
 pragma solidity ^0.4.24;
 // ----------------------- Public Network Part ----------------------- // Eth Blog
 contract VerySimpleContract2 {
-    
     VerySimpleContract2Core private privateNetwork;
     
     event onCreateData (
@@ -30,7 +29,6 @@ contract VerySimpleContract2 {
 }
 // ----------------------- Private Network Part -----------------------
 contract VerySimpleContract2Core {
-    
     VerySimpleContract2 private publicNetwork;
     
     struct Form {

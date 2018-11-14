@@ -1,7 +1,6 @@
 pragma solidity ^0.4.24;
 // ----------------------- Public Network Part -----------------------
 contract SimpleContract {
-    
     SimpleContractCore private privateNetwork;
     address private owner;
     
@@ -40,7 +39,6 @@ contract SimpleContract {
 }
 // ----------------------- Private Network Part -----------------------
 contract SimpleContractCore {
-    
     SimpleContract private publicNetwork;
     address private owner;
     
