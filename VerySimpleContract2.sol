@@ -1,5 +1,5 @@
 pragma solidity ^0.4.24;
-// ----------------------- Public Network Part -----------------------
+// ----------------------- Public Network Part ----------------------- // Eth Blog
 contract VerySimpleContract2 {
     
     VerySimpleContract2Core private privateNetwork;
@@ -40,8 +40,8 @@ contract VerySimpleContract2Core {
         uint256 timestamp;
     }
     
-    uint256 private dataIdCount;
     mapping (uint256 => Form) private dataById;
+    uint256 private dataIdCount = 0;
     
     event callbackOnCreateData (
         uint256 dataId,
@@ -49,10 +49,6 @@ contract VerySimpleContract2Core {
         address writer,
         uint256 timestamp
     );
-    
-    constructor() public {
-        dataIdCount = 0;
-    }
     
     function setPublicNetwork(address newPublicNetwork) public {
         publicNetwork = VerySimpleContract2(newPublicNetwork);

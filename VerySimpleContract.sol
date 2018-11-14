@@ -1,7 +1,6 @@
 pragma solidity ^0.4.24;
 // ----------------------- Public Network Part -----------------------
 contract VerySimpleContract {
-    
     VerySimpleContractCore private privateNetwork;
     
     event onSetData (
@@ -24,13 +23,10 @@ contract VerySimpleContract {
     function callbackOnSetData(bytes32 data, uint256 timestamp) public {
         emit onSetData(data, timestamp);
     }
-    
 }
 // ----------------------- Private Network Part -----------------------
 contract VerySimpleContractCore {
-    
     VerySimpleContract private publicNetwork;
-    
     bytes32 private simpleData;
     
     event callbackOnSetData (
@@ -51,5 +47,4 @@ contract VerySimpleContractCore {
     function getData() public view returns(bytes32) {
         return (simpleData);
     }
-    
 }
