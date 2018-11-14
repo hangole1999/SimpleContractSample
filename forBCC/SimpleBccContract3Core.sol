@@ -21,23 +21,20 @@ contract SimpleBccContract3Core {
         gameM[gameId].betNumberM[betNumber] = player;
         
         bool result = false;
-        address winnerAddress = address(0);
         
         if (gameM[gameId].playerCount == 4) {
             result = true;
-            winnerAddress = finishGame(gameId);
+            finishGame(gameId);
         } else {
             emit callbackOnBettingGame(false, 0);
         }
     }
     
-    function finishGame(uint gameId) internal returns(address) {
+    function finishGame(uint gameId) internal {
         uint winNumber = gameM[gameId].randomNumber;
         address winnerAddress = gameM[gameId].betNumberM[winNumber];
         
         emit callbackOnBettingGame(true, winnerAddress);
-        
-        return (winnerAddress);
     }
     
     function createGame() public {
