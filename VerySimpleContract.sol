@@ -8,16 +8,12 @@ contract VerySimpleContract {
         uint256 timestamp
     );
     
-    event setDataCore (
-        bytes32 data
-    );
-    
     function setPrivateNetwork(address newPrivateNetwork) public {
         privateNetwork = VerySimpleContractCore(newPrivateNetwork);
     }
     
     function setData(bytes32 data) public {
-        emit setDataCore(data);
+        privateNetwork.setDataCore(data);
     }
     
     function callbackOnSetData(bytes32 data, uint256 timestamp) public {
@@ -29,11 +25,6 @@ contract VerySimpleContractCore {
     VerySimpleContract private publicNetwork;
     bytes32 private simpleData;
     
-    event callbackOnSetData (
-        bytes32 data,
-        uint256 timestamp
-    );
-    
     function setPublicNetwork(address newPublicNetwork) public {
         publicNetwork = VerySimpleContract(newPublicNetwork);
     }
@@ -41,7 +32,7 @@ contract VerySimpleContractCore {
     function setDataCore(bytes32 data) public {
         simpleData = data;
         
-        emit callbackOnSetData(simpleData, now);
+        publicNetwork.callbackOnSetData(simpleData, now);
     }
     
     function getData() public view returns(bytes32) {

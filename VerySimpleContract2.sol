@@ -10,17 +10,12 @@ contract VerySimpleContract2 {
         uint256 timestamp
     );
     
-    event writeDataCore (
-        bytes32 data,
-        address writer
-    );
-    
     function setPrivateNetwork(address newPrivateNetwork) public {
         privateNetwork = VerySimpleContract2Core(newPrivateNetwork);
     }
     
     function writeData(bytes32 data) public {
-        emit writeDataCore(data, msg.sender);
+        privateNetwork.writeDataCore(data, msg.sender);
     }
     
     function callbackOnCreateData(uint256 dataId, bytes32 data, address wrtier, uint256 timestamp) public {
@@ -41,13 +36,6 @@ contract VerySimpleContract2Core {
     mapping (uint256 => Form) private dataById;
     uint256 private dataIdCount = 0;
     
-    event callbackOnCreateData (
-        uint256 dataId,
-        bytes32 data,
-        address writer,
-        uint256 timestamp
-    );
-    
     function setPublicNetwork(address newPublicNetwork) public {
         publicNetwork = VerySimpleContract2(newPublicNetwork);
     }
@@ -64,7 +52,7 @@ contract VerySimpleContract2Core {
             timestamp: timestamp
         });
         
-        emit callbackOnCreateData(dataIdCount, data, writer, timestamp);
+        publicNetwork.callbackOnCreateData(dataIdCount, data, writer, timestamp);
     }
     
     function getDataById(uint256 dataId) public view returns(bytes32, address, uint256) {

@@ -14,7 +14,7 @@ contract SimpleBccContract3Core {
     event callbackOnBettingGame (bool result, address winnerAddress);
     event callbackOnCreateGame (uint gameId);
     
-    function bettingGame(address player, uint gameId, uint betNumber) public {
+    function bettingGameCore(address player, uint gameId, uint betNumber) public {
         gameM[gameId].playerCount++;
         
         gameM[gameId].playerM[gameM[gameId].playerCount] = player;

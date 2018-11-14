@@ -6,8 +6,6 @@ contract VerySimpleContract3 {
     event onWinner(address winnerAddress);
     event onCreateGame(uint gameId);
     
-    event bettingGameCore(address player, uint gameId, uint betNumber);
-    
     function setPrivateNetwork(address newPrivateNetwork) public {
         privateNetwork = VerySimpleContract3Core(newPrivateNetwork);
     }
@@ -16,7 +14,7 @@ contract VerySimpleContract3 {
     
     function bettingGame(uint gameId, uint betNumber) public payable {
         betAmount[msg.sender] = msg.value;
-        emit bettingGameCore(msg.sender, gameId, betNumber);
+        privateNetwork.bettingGameCore(msg.sender, gameId, betNumber);
     }
     
     function callbackOnBettingGame(bool result, address winnerAddress) public payable {
@@ -49,10 +47,7 @@ contract VerySimpleContract3Core {
     mapping (uint => Game) public gameM;
     uint internal gameIdCount = 0;
     
-    event callbackOnBettingGame (bool result, address winnerAddress);
-    event callbackOnCreateGame (uint gameId);
-    
-    function bettingGame(address player, uint gameId, uint betNumber) public {
+    function bettingGameCore(address player, uint gameId, uint betNumber) public {
         gameM[gameId].playerCount++;
         
         gameM[gameId].playerM[gameM[gameId].playerCount] = player;
@@ -65,7 +60,7 @@ contract VerySimpleContract3Core {
             result = true;
             winnerAddress = finishGame(gameId);
         } else {
-            emit callbackOnBettingGame(false, 0);
+            publicNetwork.callbackOnBettingGame(false, 0);
         }
     }
     
@@ -73,7 +68,7 @@ contract VerySimpleContract3Core {
         uint winNumber = gameM[gameId].randomNumber;
         address winnerAddress = gameM[gameId].betNumberM[winNumber];
         
-        emit callbackOnBettingGame(true, winnerAddress);
+        publicNetwork.callbackOnBettingGame(true, winnerAddress);
         
         return (winnerAddress);
     }
@@ -89,6 +84,6 @@ contract VerySimpleContract3Core {
         
         gameM[gameIdCount].randomNumber = (uint(block.blockhash(block.number-1)) % 4) + 1;
         
-        emit callbackOnCreateGame(gameIdCount);
+        publicNetwork.callbackOnCreateGame(gameIdCount);
     }
 }
