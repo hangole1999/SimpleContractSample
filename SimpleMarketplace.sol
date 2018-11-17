@@ -12,7 +12,7 @@ contract SimpleMarketplace {
         privateNetwork.buyPlotCore(index, msg.sender, msg.value);
     }
     
-    function callbackBuyPlot(address balanceOwner, uint balance) public {
+    function callbackOnBuyPlot(address balanceOwner, uint balance) public {
         balances[balanceOwner] += balance;
     }
     
@@ -78,6 +78,6 @@ contract SimpleMarketplaceCore {
         
         plots[index].owner = plotOwner;
         
-        publicNetwork.callbackBuyPlot(balanceOwner, balance);
+        publicNetwork.callbackOnBuyPlot(balanceOwner, balance);
     }
 }
