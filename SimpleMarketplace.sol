@@ -2,41 +2,19 @@ pragma solidity ^0.4.24;
 
 contract SimpleMarketplace {
     SimpleMarketplaceCore private privateNetwork;
-    address owner;
     mapping (address => uint) public balances;
     
-    constructor() public {
-        owner = msg.sender;
-    }
-    
-    modifier isOwner() {
-        require(msg.sender == owner, "Require Owner");
-        _;
-    }
-    
-    function transferOwnership(address newOwner) public isOwner() {
-        owner = newOwner;
-    }
-    
-    function setPrivateNetwork(address newPrivateNetwork) public isOwner() {
+    function setPrivateNetwork(address newPrivateNetwork) public {
         privateNetwork = SimpleMarketplaceCore(newPrivateNetwork);
     }
     
     function buyPlot(uint index) public payable {
-        privateNetwork.buyPlotCore(index, msg.sender);
+        privateNetwork.buyPlotCore(index, msg.sender, msg.value);
     }
     
-    // function buyPlot(uint index) public payable {
-    //     privateNetwork.buyPlotCore(index, msg.sender, msg.value);
-    // }
-    
-    function callbackBuyPlot(address balanceOwner) public {
-        balances[balanceOwner] += 4;
+    function callbackBuyPlot(address balanceOwner, uint balance) public {
+        balances[balanceOwner] += balance;
     }
-    
-    // function callbackBuyPlot(address balanceOwner, uint balance) public {
-    //     balances[balanceOwner] += balance;
-    // }
     
     function withdrawFunds() public {
         address payee = msg.sender;
@@ -51,7 +29,6 @@ contract SimpleMarketplace {
 
 contract SimpleMarketplaceCore {
     SimpleMarketplace private publicNetwork;
-    address owner;
     
     struct Plot {
         address owner;
@@ -61,8 +38,6 @@ contract SimpleMarketplaceCore {
     mapping (uint => Plot) public plots;
     
     constructor() public {
-        owner = msg.sender;
-        
         plots[0] = Plot({
             owner: 0x0,
             price: 4
@@ -81,16 +56,7 @@ contract SimpleMarketplaceCore {
         });
     }
     
-    modifier isOwner() {
-        require(msg.sender == owner, "Require Owner");
-        _;
-    }
-    
-    function transferOwnership(address newOwner) public isOwner() {
-        owner = newOwner;
-    }
-    
-    function setPublicNetwork(address newPublicNetwork) public isOwner() {
+    function setPublicNetwork(address newPublicNetwork) public {
         publicNetwork = SimpleMarketplace(newPublicNetwork);
     }
     
@@ -107,27 +73,11 @@ contract SimpleMarketplaceCore {
     //     return (addrs, price);
     // }
     
-    function buyPlotCore(uint index, address plotOwner) public {
-        if (plots[index].owner == 0x0) {
-            publicNetwork.callbackBuyPlot(owner);
-        } else {
-            publicNetwork.callbackBuyPlot(plots[index].owner);
-        }
+    function buyPlotCore(uint index, address plotOwner, uint balance) public {
+        address balanceOwner = plots[index].owner;
         
         plots[index].owner = plotOwner;
+        
+        publicNetwork.callbackBuyPlot(balanceOwner, balance);
     }
-    
-    // function buyPlotCore(uint index, address plotOwner, uint balance) public {
-    //     address balanceOwner = 0x0;
-        
-    //     if (plots[index].owner == 0x0) {
-    //         balanceOwner = owner;
-    //     } else {
-    //         balanceOwner = plots[index].owner;
-    //     }
-        
-    //     plots[index].owner = plotOwner;
-        
-    //     publicNetwork.callbackBuyPlot(balanceOwner, balance);
-    // }
 }
