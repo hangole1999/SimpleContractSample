@@ -1,5 +1,5 @@
 pragma solidity ^0.4.24;
-contract SimpleBccContract2 {
+contract SimpleBifrostContract2 {
     event onCreateData (
         uint256 indexed dataId,
         bytes32 indexed data,

@@ -1,5 +1,5 @@
 pragma solidity ^0.4.24;
-contract SimpleBccContract1Core {
+contract SimpleBifrostContract1Core {
     bytes32 private simpleData;
     
     event callbackOnSetData (

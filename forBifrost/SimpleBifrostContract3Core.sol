@@ -1,5 +1,5 @@
 pragma solidity ^0.4.24;
-contract SimpleBccContract3Core {
+contract SimpleBifrostContract3Core {
     struct Game {
         uint gameId;
         mapping (uint => address) playerM;

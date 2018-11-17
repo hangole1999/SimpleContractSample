@@ -1,5 +1,5 @@
 pragma solidity ^0.4.24;
-contract SimpleBccContract3 {
+contract SimpleBifrostContract3 {
     event onWinner(address winnerAddress);
     event onCreateGame(uint gameId);
     

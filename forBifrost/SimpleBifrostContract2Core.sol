@@ -1,5 +1,5 @@
 pragma solidity ^0.4.24;
-contract SimpleBccContract2Core {
+contract SimpleBifrostContract2Core {
     struct Form {
         uint256 dataId;
         bytes32 data;
