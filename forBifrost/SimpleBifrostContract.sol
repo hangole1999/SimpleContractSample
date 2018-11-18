@@ -1,5 +1,5 @@
 pragma solidity ^0.4.24;
-contract SimpleBifrostContract1 {
+contract SimpleBifrostContract {
     event onSetData (
         bytes32 data,
         uint256 timestamp
