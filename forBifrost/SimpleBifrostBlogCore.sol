@@ -1,5 +1,6 @@
 pragma solidity ^0.4.24;
-contract SimpleBifrostBlogContractCore {
+
+contract SimpleBifrostBlogCore {
     struct Form {
         uint256 dataId;
         bytes32 data;
@@ -17,7 +18,7 @@ contract SimpleBifrostBlogContractCore {
         uint256 timestamp
     );
     
-    function writeDataCore(bytes32 data, address writer) public returns(uint256) {
+    function writeDataCore(bytes32 data, address writer) public {
         dataIdCount++;
         
         uint256 timestamp = now;

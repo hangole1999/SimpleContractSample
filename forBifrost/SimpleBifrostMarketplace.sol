@@ -1,29 +1,54 @@
 pragma solidity ^0.4.24;
 
 contract SimpleBifrostMarketplace {
-    event buyPlotCore(
+    event onBuyPlot(
         uint index,
-        address owner,
-        uint balance
+        address plotOwner,
+        address balanceOwner
     );
     
-    mapping (address => uint) public balances;
+    event onCreatePlot (
+        uint index,
+        uint price
+    );
+    event buyPlotCore(
+        uint index,
+        address owner
+    );
+    
+    struct Plot {
+        address owner;
+        uint price;
+    }
+    
+    mapping (uint => Plot) private plots;
+    
+    mapping (address => uint) private balances;
     
     function buyPlot(uint index) public payable {
-        emit buyPlotCore(index, msg.sender, msg.value);
+        balances[msg.sender] += msg.value;
+        
+        emit buyPlotCore(index, msg.sender);
     }
     
-    function callbackOnBuyPlot(address balanceOwner, uint balance) public {
-        balances[balanceOwner] += balance;
+    function callbackOnCreatePlot(uint index, uint price) public {
+        plots[index] = Plot({
+            owner: 0x0,
+            price: price
+        });
+        
+        emit onCreatePlot(index, price);
     }
     
-    function withdrawFunds() public {
-        address payee = msg.sender;
-        uint payment = balances[payee];
+    function callbackOnBuyPlot(uint index, address plotOwner, address balanceOwner) public {
+        plots[index].owner = plotOwner;
         
-        require(payment > 0);
+        emit onBuyPlot(index, plotOwner, balanceOwner);
         
-        balances[payee] = 0;
-        require(payee.send(payment));
+        balanceOwner.transfer(balances[balanceOwner]);
+    }
+    
+    function getPlotById(uint plotId) public view returns(address, uint) {
+        return (plots[plotId].owner, plots[plotId].price);
     }
 }

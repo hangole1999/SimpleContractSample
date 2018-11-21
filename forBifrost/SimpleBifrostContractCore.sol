@@ -1,4 +1,5 @@
 pragma solidity ^0.4.24;
+
 contract SimpleBifrostContractCore {
     bytes32 private simpleData;
     

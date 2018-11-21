@@ -2,7 +2,9 @@ pragma solidity ^0.4.24;
 
 contract SimpleBifrostCollectibleCore {
     event callbackOnCreateCollection(
-        uint id
+        uint id,
+        address owner,
+        uint dna
     );
     
     constructor() public {
@@ -15,9 +17,9 @@ contract SimpleBifrostCollectibleCore {
         uint dna;
     }
     
-    mapping (uint => Collection) public collections;
+    mapping (uint => Collection) private collections;
     
-    uint public collectionCountId;
+    uint private collectionCountId;
     
     function createCollectionCore(address owner) public {
         collectionCountId++;
@@ -30,6 +32,10 @@ contract SimpleBifrostCollectibleCore {
             dna: dna
         });
         
-        emit callbackOnCreateCollection(collectionCountId);
+        emit callbackOnCreateCollection(collectionCountId, owner, dna);
+    }
+    
+    function getCollectionById(uint collectionId) public view returns(uint, address, uint) {
+        return (collections[collectionId].id, collections[collectionId].owner, collections[collectionId].dna);
     }
 }
