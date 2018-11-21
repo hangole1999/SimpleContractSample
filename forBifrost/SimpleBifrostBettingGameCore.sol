@@ -13,9 +13,10 @@ contract SimpleBifrostBettingGameCore {
     mapping (uint => Game) private gameM;
     uint private gameIdCount = 0;
     
-    event callbackOnCreateGame (uint gameId);
-    event callbackOnBettingGame (uint gameId, uint betNumber, uint playerId, address player);
-    event callbackOnFinishedGame (uint gameId, uint winNumber, address winnerAddress);
+    event callbackOnCreateGame(uint gameId);
+    event callbackOnBettingGame(uint gameId, uint betNumber, uint playerId, address player);
+    event callbackOnAddBettingAmount(uint gameId, address player);
+    event callbackOnFinishedGame(uint gameId, uint winNumber, address winnerAddress);
     
     function bettingGameCore(uint gameId, uint betNumber, address player) public payable {
         gameM[gameId].playerCount++;
@@ -29,6 +30,12 @@ contract SimpleBifrostBettingGameCore {
         if (gameM[gameId].playerCount == 4) {
             finishGame(gameId);
         }
+    }
+    
+    function addBettingAmountCore(uint gameId, address player) public payable {
+        gameM[gameId].betAmountM[player] += msg.value;
+        
+        emit callbackOnAddBettingAmount(gameId, player);
     }
     
     function finishGame(uint gameId) private {

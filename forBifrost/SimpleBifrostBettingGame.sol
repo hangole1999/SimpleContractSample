@@ -12,9 +12,11 @@ contract SimpleBifrostBettingGame {
     
     event onCreateGame(uint gameId);
     event onBettingGame(uint gameId, uint betNumber, uint playerId, address player);
+    event onAddBettingAmount(uint gameId, address player);
     event onFinishedGame(uint gameId, uint winNumber, address winnerAddress);
     
     event bettingGameCore(uint gameId, uint betNumber, address player);
+    event addBettingAmountCore(uint gameId, address player);
     
     function bettingGame(uint gameId, uint betNumber) public payable {
         gameM[gameId].betAmountM[msg.sender] = msg.value;
@@ -22,7 +24,13 @@ contract SimpleBifrostBettingGame {
         emit bettingGameCore(gameId, betNumber, msg.sender);
     }
     
-    function callbackOnCreateGame(uint gameId) public {
+    function addBettingAmount(uint gameId) public payable {
+        gameM[gameId].betAmountM[msg.sender] += msg.value;
+        
+        emit addBettingAmountCore(gameId, msg.sender);
+    }
+    
+    function callbackOnCreateGame(uint gameId) public payable {
         gameM[gameId] = Game({
             gameId: gameId
         });
@@ -37,9 +45,13 @@ contract SimpleBifrostBettingGame {
         emit onBettingGame(gameId, betNumber, playerId, player);
     }
     
+    function callbackOnAddBettingAmount(uint gameId, address player) public {
+        emit onAddBettingAmount(gameId, player);
+    }
+    
     function callbackOnFinishedGame(uint gameId, uint winNumber, address winnerAddress) public payable {
         emit onFinishedGame(gameId, winNumber, winnerAddress);
-
+        
         winnerAddress.transfer(gameM[gameId].betAmountM[winnerAddress]*2);
     }
     
