@@ -134,7 +134,15 @@ input[type=number]::-webkit-outer-spin-button {
     transform: rotate(360deg) scale(1.2);
 }
 
-.post-form form {
+.home .main {
+    margin: 100px auto;
+    max-width: 1000px;
+    padding: 50px 20px;
+    background: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.content {
     color: black;
     max-width: 1000px;
     margin: 100px auto;
@@ -215,6 +223,10 @@ a.button:hover {
     margin: 20px 0;
 }
 
+.popup-footer {
+    min-height: 30px;
+}
+
 .popup-close-button,
 .popup-login-button {
     float: right;
@@ -233,6 +245,8 @@ a.button:hover {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
 }
+
+
 
 .input-field {
     margin: 20px;
@@ -256,6 +270,11 @@ a.button:hover {
 .input-field input:hover,
 .input-field input:focus {
     border-bottom-color: black;
+}
+
+.input-field input[type=text] {
+    margin: 30px 20px;
+    padding: 20px 15px;
 }
 
 .wanted-poster {

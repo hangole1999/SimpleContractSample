@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import BlogHome from './blog/views/Home.vue'
 import PostForm from './blog/views/PostForm.vue'
 import CollectibleHome from './collectible/views/Home.vue'
+import CreateCollectible from './collectible/views/CreateCollectible.vue'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/collectible',
       name: 'collectibleHome',
       component: CollectibleHome
+    },
+    {
+      path: '/collectible/create',
+      name: 'createCollectible',
+      component: CreateCollectible
     }
   ]
 })
