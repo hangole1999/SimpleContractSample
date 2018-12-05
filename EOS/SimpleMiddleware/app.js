@@ -2,35 +2,57 @@
 let Eos = require('eosjs');
 
 let eos = Eos({
-    chainId: '5fff1dae8dc8e2fc4d5b23b2c7665c97f9e9d8edf2b6485a86ba311c25639191',
+    chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
     keyProvider: [
-        "5Kdcpisr8cmUG1g4NieMw1g2z7VY2E6jCyZ8329QBAESW9aUxHX", // 1111test1115 active_key
-        "5KGmxEH1btmzUceKP9ED6Z16DsWPxg794JxSsmyjJTYXV2APrcb", // 1111test1115 owner_key
-        "5KETTzk9pcr8aTDmNUsMq9LSHqZxJN5wpzvVQ6MaU9gX48g5oqV", // 1111testcore active_key
-        "5KcfBowZcVTR1Hd1GDGQsNuQ2hT7aHexH6TQnEso31VEcubXPHY" // 1111testcore owner_key
+        "5JaN8UKeQqpBPMLwZXp127sLh5LHRWkYaKMFvmmFJmQGUUAwpcn", // test / simplectr / simplectrc active_key (private net)
+        "5JKyzggcSmByHZ1fojZYHVvLh7ksDEgJ2S1MdsL39qm2HcGoF1k" // test / simplectr / simplectrc owner_key (private net)
     ],
-    httpEndpoint: "http://api.kylin.helloeos.com.cn",
+    httpEndpoint: "http://localhost:8888",
     broadcast: true,
     verbose: true,
+    logger: {
+        log: function(e) {
+            console.log("\n - : - LOGING");
+            console.log(e);
+        },
+        error: function(e) {
+            console.log("\n - : - ERROR LOGING");
+            console.log(e);
+        }
+    },
     sign: true
 });
 
-console.log("\n Send - " + process.argv[3] + "(\"" + process.argv[4] + "\"); -p " + process.argv[2] + "@" + process.argv[5] + "\n");
 
-eos.transaction({
-    actions: [{
-        account: process.argv[2],
-        name: process.argv[3],
-        data: {
-            from: process.argv[2],
-            to: process.argv[2],
-            data: process.argv[4]
-        },
-        authorization: [{
-            actor: process.argv[2],
-            permission: process.argv[5]
+
+function sendTransaction(data) {
+    eos.transaction({
+        actions: [{
+            account: data.from,
+            name: data.name,
+            data: data,
+            authorization: [{
+                actor: data.from,
+                permission: "active"
+            }]
         }]
-    }]
-});
+    }).then(e => {
+        try {
+            var result = JSON.parse(e.processed.action_traces[0].console);
+    
+            if (result) {
+                sendTransaction(result);
+            }
+        } catch(e) {
+        }
+    });
+}
 
-console.log("\n Sended - " + process.argv[3] + "(\"" + process.argv[4] + "\"); -p " + process.argv[2] + "@" + process.argv[5] + "\n");
+// $ node app.js simplectr setdata 12345
+
+sendTransaction({
+    from: process.argv[2],
+    to: process.argv[2],
+    name: process.argv[3],
+    data: process.argv[4]
+});

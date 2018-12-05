@@ -23,51 +23,21 @@ const updaters = [{
 
 
 
-function logUpdate(state, payload, blockInfo, context) {console.log(payload);console.log(blockInfo);console.log(context);
-    console.info("State updated:\n", JSON.stringify(context.stateCopy, null, 2));
-}
-
-function greet(state, payload, blockInfo, context) {
-    console.log(blockInfo.data);
-}
-
-function hello(state, payload, blockInfo, context) {
-    console.log("\n\n - hello() - " + new Date().toISOString());
-    // console.log("\n : state");
-    // console.log(state);
-    console.log("\n : payload");
+function effect(state, payload, blockInfo, context) {
+    console.log("\n - " + payload.account + "::" + payload.name + "() - " + new Date().toISOString());
+    console.log(": payload");
     console.log(payload);
-    console.log("\n : blockInfo");
+    console.log(": blockInfo");
     console.log(blockInfo);
-    // console.log("\n : context");
-    // console.log(context);
-}
-
-function ontested(state, payload, blockInfo, context) {
-    console.log("\n\n - ontested() - " + new Date().toISOString());
-    // console.log("\n : state");
-    // console.log(state);
-    console.log("\n : payload");
-    console.log(payload);
-    console.log("\n : blockInfo");
-    console.log(blockInfo);
-    // console.log("\n : context");
-    // console.log(context);
 }
 
 const effects = [
     {
-        actionType: "eosio.token::transfer1",
-        effect: logUpdate
+        actionType: "simplectr::cbsetdata",
+        effect: effect
     }, {
-        actionType: "11111hangole::greet",
-        effect: greet
-    }, {
-        actionType: "1111test1115::hello",
-        effect: hello
-    }, {
-        actionType: "1111testcore::ontested",
-        effect: ontested
+        actionType: "simplectrc::setdatacore",
+        effect: effect
     }
 ];
 

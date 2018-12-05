@@ -7,34 +7,22 @@ class simplectr : public eosio::contract {
   public:
       using contract::contract;
 
-      /// @abi table _calltab i64
-      struct calltab
-      {
-         int64_t id;
-         int64_t act;
-         int64_t data;
-         uint64_t primary_key() const {return id;}
-         EOSLIB_SERIALIZE(ttab, (id) (act) (data))
-      };
-      
-      typedef multi_index<N(calltab),calltab> _calltab;
-
       int64_t data;
 
       /// @abi action
       void setdata( int64_t data ) {
-         _calltab calltabs(_self,_self);
-
-         calltabs.emplace(_self,[&](auto& calltab) {
-            calltab.id = calltabs.available_primary_key();
-            calltab.act = 1;
-            calltab.data = data;
-         });
+         print("{\"from\": \"simplectrc\",\"to\": \"simplectrc\",\"name\": \"setdatacore\",\"data\": ");
+         print(data);
+         print("}");
       }
 
-      void cbonsetdata( int64_t data ) {
+      void cbsetdata( int64_t data ) {
          this->data = data;
+
+         print("cbsetdata(");
+         print(data);
+         print(")");
       }
 };
 
-EOSIO_ABI( simplectr, (setdata) (cbonsetdata) )
+EOSIO_ABI( simplectr, (setdata) (cbsetdata) )
