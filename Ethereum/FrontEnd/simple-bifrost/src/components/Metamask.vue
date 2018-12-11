@@ -2,14 +2,14 @@
 <template>
   <div class='metamask-info' :class="isOpen?'is-open':null" @click="isOpen=!isOpen">
     <div v-if="!isOpen">
-      <i class="material-icons">arrow_drop_down</i>
+      <i class="material-icons">arrow_drop_up</i>
     </div>
     <div v-if="isOpen">
       <p v-if="!isInjected" id="no-metamask" class="cr">Can't read Ethereum Wallet</p>
       <div v-if="isInjected">
         <p>{{network}}</p>
         <p>{{coinbase}}</p>
-        <p>{{numberWithCommas((parseInt(balance) / 1000000000000000000).toFixed(3))}} Ether ({{numberWithCommas((parseInt(balance) / 1000000000).toFixed(3))}} Gwei / {{numberWithCommas(balance)}} Wei)</p>
+        <p>{{numberWithCommas((parseInt(balance) / 1000000000000000000).toFixed(3))}} Ether<br>{{numberWithCommas((parseInt(balance) / 1000000000).toFixed(3))}} Gwei<br>{{numberWithCommas(balance)}} Wei</p>
       </div>
     </div>
   </div>

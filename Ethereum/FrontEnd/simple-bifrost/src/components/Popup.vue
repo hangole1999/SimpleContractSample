@@ -1,7 +1,7 @@
 
 <template>
   <transition name="popup">
-    <div class="register-player popup-mask">
+    <div class="popup-mask">
       <div class="popup-wrapper">
         <div class="popup-container">
 
@@ -13,7 +13,7 @@
 
           <div class="popup-body">
             <slot name="body">
-              <p>Some Message</p>
+              <p>Some Message</p><!-- https://robohash.org/SOME_TEXT?size=200x200 -->
             </slot>
           </div>
 

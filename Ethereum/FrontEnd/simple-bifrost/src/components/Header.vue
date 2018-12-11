@@ -2,11 +2,13 @@
 <template>
   <div class="header">
     <div class="left-header">
-      <Metamask/>
-      <router-link class="button go-main" to="/">Main</router-link>
+      <router-link class="button go-main" to="/"><i class="material-icons">home</i></router-link>
+      <BlogNavigation v-if="/^\/blog.*/.test($route.path)"/>
+      <CollectibleNavigation v-if="/^\/collectible.*/.test($route.path)"/>
     </div>
-    <BlogNavigation v-if="/^\/blog.*/.test($route.path)"/>
-    <CollectibleNavigation v-if="/^\/collectible.*/.test($route.path)"/>
+    <div class="left-bottom-header">
+      <Metamask/>
+    </div>
   </div>
 </template>
 
@@ -18,9 +20,9 @@ import CollectibleNavigation from '../collectible/components/Navigation.vue';
 export default {
   name: 'Header',
   components: {
-      Metamask,
-      BlogNavigation,
-      CollectibleNavigation
+    Metamask,
+    BlogNavigation,
+    CollectibleNavigation
   }
 }
 </script>
